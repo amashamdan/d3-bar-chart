@@ -30,7 +30,7 @@ function plot() {
 	chart.style("background-color", "white");
 
 	var xScale = d3.scale.linear()
-						.domain([0, d3.max(modifiedData, function(d) {return d[0];})])
+						.domain([d3.min(modifiedData, function(d) {return d[0];}), d3.max(modifiedData, function(d) {return d[0];})])
 						.range([padding, width - padding / 2]);
 
 	var yScale = d3.scale.linear()
@@ -64,11 +64,11 @@ function plot() {
 		});
 	var xAxis = d3.svg.axis()
 				.scale(xScale)
-				.orient("bottom");
+				.orient("bottom")
+				.ticks(12);
 	chart.append("g")
 		.attr("class", "axis")
 		.attr("transform", "translate(0, "+ (height - padding) +" )")
-		.style("stroke-width", "3px")
 		.call(xAxis);
 	var yAxis = d3.svg.axis()
 				.scale(yScale)
