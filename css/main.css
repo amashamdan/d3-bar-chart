@@ -6,12 +6,10 @@ body {
 .axis {
 	font-family: arial;
 	font-size: 0.8em;
-	shape-rendering: crispEdges;
-	height: 0.2em
 }
 
-.domain { 
-  fill: none; 
-  stroke: black; 
-  stroke-width; 1; 
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000000;
 }
