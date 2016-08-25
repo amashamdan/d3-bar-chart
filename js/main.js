@@ -23,9 +23,9 @@ $.ajax({
 
 // should be a function called from ajax, if not in function. it'll execute before the response comes back and nothing will be displayed.
 function plot() {
-	var width = 900;
-	var height = 500;
-	var padding = 0;
+	var padding = 50;
+	var width = 1000;
+	var height = 600;
 	var chart = d3.select("body").append("svg").attr("height", height).attr("width", width);
 	chart.style("background-color", "white");
 
@@ -42,17 +42,17 @@ function plot() {
 		.enter()
 		.append("rect")
 		.attr("x", function(d, i) {
-			return (width / modifiedData.length) * i;
+			return ((width - 2*padding)/ modifiedData.length) * i + padding;
 		})
 		.attr("y", function(d) {
 			return height - yScale(d[1]);
 		})
 		.attr("width", function(d) {
 			// +1 here makes the bars overlap and hide the borders between them
-			return width / modifiedData.length + 1;
+			return (width-padding) / modifiedData.length + 1;
 		})
 		.attr("height", function(d) {
-			return yScale(d[1]);
+			return yScale(d[1]) - padding;
 		})
 		.attr("fill", "blue");
 }
