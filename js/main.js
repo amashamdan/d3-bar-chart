@@ -35,7 +35,7 @@ function plot() {
 
 	var yScale = d3.scale.linear()
 						.domain([0, d3.max(modifiedData, function(d) {return d[1];})])
-						.range([padding, height - padding]);
+						.range([height - padding, padding]);
 	var colorScale = d3.scale.linear()
 						.domain([d3.min(modifiedData, function(d) {return d[1];}), d3.max(modifiedData, function(d) {return d[1];})])
 						.range([0, 256]);
@@ -49,14 +49,14 @@ function plot() {
 			return ((width - 1.5*padding)/ modifiedData.length) * i + padding;
 		})
 		.attr("y", function(d) {
-			return height - yScale(d[1]);
+			return yScale(d[1]);
 		})
 		.attr("width", function(d) {
 			// +1 here makes the bars overlap and hide the borders between them
 			return (width-padding) / modifiedData.length + 1;
 		})
 		.attr("height", function(d) {
-			return yScale(d[1]) - padding;
+			return height - yScale(d[1]) - padding;
 		})
 		.attr("fill", function(d) {
 			// Math.floor in needed, rgb only accepts integers.
