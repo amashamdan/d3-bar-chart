@@ -1,3 +1,17 @@
 body {
-	background-color: red;
+	background-color: gray;
+	text-align: center;
+}
+
+.axis {
+	font-family: arial;
+	font-size: 0.8em;
+	shape-rendering: crispEdges;
+	height: 0.2em
+}
+
+.domain { 
+  fill: none; 
+  stroke: black; 
+  stroke-width; 1; 
 }
