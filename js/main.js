@@ -36,6 +36,9 @@ function plot() {
 	var yScale = d3.scale.linear()
 						.domain([0, d3.max(modifiedData, function(d) {return d[1];})])
 						.range([padding, height - padding]);
+	var colorScale = d3.scale.linear()
+						.domain([d3.min(modifiedData, function(d) {return d[1];}), d3.max(modifiedData, function(d) {return d[1];})])
+						.range([0, 256]);
 
 	chart.selectAll("rect")
 		.data(modifiedData)
@@ -54,5 +57,8 @@ function plot() {
 		.attr("height", function(d) {
 			return yScale(d[1]) - padding;
 		})
-		.attr("fill", "blue");
+		.attr("fill", function(d) {
+			// Math.floor in needed, rgb only accepts integers.
+			return "rgb(0,0," + Math.floor(colorScale(d[1])) + ")";
+		});
 }
