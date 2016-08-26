@@ -39,7 +39,7 @@ function plot() {
 	var padding = 100;
 	var width = 1000;
 	var height = 600;
-	var chart = d3.select("body").append("svg").attr("height", height).attr("width", width);
+	var chart = d3.select("#chart-area").append("svg").attr("height", height).attr("width", width);
 	chart.style("background-color", "white");
 
 	var xScale = d3.scale.linear()
