@@ -8,11 +8,24 @@ $.ajax({
 		for (var point in data.data) {	
 			gdpData.push(data.data[point]);
 		};
-		console.log(gdpData[0]);
 		for (var point in gdpData) {
 			var fullDate = gdpData[point][0];
 			fullDate = fullDate.split("-");
-			modifiedData.push([fullDate[0], gdpData[point][1]]);
+			var year = fullDate[0];
+			var value = gdpData[point][1];
+			var monthNumber = fullDate[1];
+			if (monthNumber == "01") {
+				var month = "January";
+			} else if (monthNumber == "04") {
+				var month = "April";
+			} else if (monthNumber == "07") {
+				var month = "July";
+			} else if (monthNumber == "10") {
+				var month = "October";
+			} else {
+				var month = "Unknown";
+			}
+			modifiedData.push([year, value, month]);
 		}
 		plot();
 	},
@@ -60,7 +73,16 @@ function plot() {
 		})
 		.attr("fill", function(d) {
 			// Math.floor in needed, rgb only accepts integers.
-			return "rgb(0,0," + Math.floor(colorScale(d[1])) + ")";
+			return "rgb(200,60," + Math.floor(colorScale(d[1])) + ")";
+		})
+		.attr("value", function(d) {
+			return d[1];
+		})
+		.attr("year", function(d) {
+			return d[0];
+		})
+		.attr("month", function(d) {
+			return d[2];
 		});
 	var xAxis = d3.svg.axis()
 				.scale(xScale)
@@ -115,4 +137,42 @@ function plot() {
 		.attr("fill", "gray")
 		.attr("font-size", "1em")
 		.attr("transform", "rotate(-90)");
+	$("rect").hover(function(e) {
+		$(this).attr("fill", "green");
+		var xPosition = e.pageX - $("svg").offset().left - 50;
+		var yPosition = e.pageY - $("svg").offset().top - 60;
+		chart.append("rect")
+			.attr("x", xPosition - 10)
+			.attr("y", yPosition)
+			.attr("width", 120)
+			.attr("height", 60)
+			.attr("rx", 20)
+			.attr("ry", 20)
+			.attr("fill", "rgba(174, 156, 60, 0.8)")
+			.attr("id", "infoWindow");
+		chart.append("text")
+			.attr("x", xPosition + 50)
+			.attr("y", yPosition + 25)
+			.attr("fill", "white")
+			.attr("font-size", "0.8em")
+			.attr("font-family", "arial")
+			.attr("class", "infoText")
+			.attr("text-anchor", "middle")
+			.text("$" + $(this).attr('value') + " Billion");
+
+		chart.append("text")
+			.attr("x", xPosition + 50)
+			.attr("y", yPosition + 45)
+			.attr("fill", "white")
+			.attr("font-size", "0.8em")
+			.attr("font-family", "arial")
+			.attr("class", "infoText")
+			.attr("text-anchor", "middle")
+			.text($(this).attr('month') + "-" + $(this).attr('year'));
+
+		}, function() {
+			$(this).attr("fill", "rgb(200,60," + Math.floor(colorScale($(this).attr('value'))) + ")");
+			d3.select("#infoWindow").remove();
+			d3.selectAll(".infoText").remove();
+		});
 }
